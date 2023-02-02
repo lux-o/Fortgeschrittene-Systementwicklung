@@ -140,7 +140,16 @@ public class MitgliederDB implements Iterable<Record>
 	 * @return the record number of the inserted record
 	 */
 	public int insert(Record record){
-		//TODO implement
+		//TODO implement - geht nur für unordered
+		//search for block where the record should be appended
+		int currBlock = getBlockNumOfRecord(getNumberOfRecords());
+		int result = db[currBlock].insertRecordAtTheEnd(record);
+		if (result != -1 ){ //insert was successful
+			return getNumberOfRecords();
+		}else if (currBlock < db.length) { // overflow => insert the record into the next block
+			db[currBlock+1].insertRecordAtTheEnd(record);
+			return getNumberOfRecords();
+		}
 		return -1;
 	}
 	
