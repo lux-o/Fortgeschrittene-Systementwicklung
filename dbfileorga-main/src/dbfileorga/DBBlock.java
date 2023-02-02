@@ -39,6 +39,24 @@ public class DBBlock implements Iterable<Record> {
 		}
 	}
 
+	/**
+	 * get start position of a record
+	 * @param recNum number of record - First record = 1
+	 * @return nuber of start position
+	 */
+	private int getStartPosOfRecord(int recNum){
+		int currRecNum = 1; //first Record starts at 0
+		for (int i = 0; i <block.length;++i){
+			if (currRecNum == recNum){
+				return i;
+			}
+			if (block[i] == RECDEL){
+				currRecNum++;
+			}
+		}
+		return -1;
+	}
+
 	private int getEndPosOfRecord(int startPos){
 		int currPos = startPos;
 		while( currPos < block.length ){
@@ -49,6 +67,30 @@ public class DBBlock implements Iterable<Record> {
 			}
 		}
 		return -1;
+	}
+
+	/**
+	 * move records up to close gap after delete or modification
+	 * @param start startpoint of record(s) to be moved
+	 * @param movement distance of movement (positiv)
+	 */
+	private void moveRecordsUp(int start, int movement){
+		for (int i = start; i < block.length; i++){
+			block[i - movement] = block[i];
+			block[i] = DEFCHAR;
+		}
+	}
+
+	/**
+	 * move records down to make more space for modify record
+	 * @param start startpoint of record(s) to be moved
+	 * @param end endpoint of record(s) to be moved
+	 * @param movement distance of movement (positiv)
+	 */
+	private void moveRecordsDown(int start, int end, int movement){
+		for (int i = end +1; i >= start; i--){
+			block[i + movement] = block[i];
+		}
 	}
 	
 	
@@ -86,6 +128,18 @@ public class DBBlock implements Iterable<Record> {
 	
 
 	/**
+	 * delete a record and move other records of this block up
+	 * @param recNum number of record to delete
+	 */
+	public void deleteRecord(int recNum){
+		moveRecordsUp(
+			getStartPosOfRecord(recNum+1), 
+			getEndPosOfRecord(getStartPosOfRecord(recNum +1)) - getStartPosOfRecord(recNum +1) + 1);
+	
+	}
+
+
+	/**
 	 * Inserts an record beginning at position startPos
 	 * @param startPos the postition to start inserting the record
 	 * @param record the record to insert
@@ -105,8 +159,6 @@ public class DBBlock implements Iterable<Record> {
 		return n+startPos;
 	}
 
-	
-
 
 	private int findEmptySpace(){
 		for (int i = 0; i <block.length;++i){
@@ -116,6 +168,7 @@ public class DBBlock implements Iterable<Record> {
 		}
 		return block.length;		
 	}
+
 	
 	@Override
 	public String toString(){

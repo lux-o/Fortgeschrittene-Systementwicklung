@@ -105,12 +105,9 @@ public class MitgliederDB implements Iterable<Record>
 		//TODO implement - done
 		int blockNum = getBlockNumOfRecord(recNum);
 		if (blockNum >= 0){
-			int recCounter = 0;
-			for (int i = 0; i < blockNum; i++){
-				recCounter += getBlock(i).getNumberOfRecords();
-			}
+			int blockRecNum = getRecNumInBlock(recNum, blockNum);
 			return
-				getBlock(blockNum).getRecord(recNum-recCounter);
+				getBlock(blockNum).getRecord(blockRecNum);
 		}
 		return null;
 	}
@@ -159,6 +156,11 @@ public class MitgliederDB implements Iterable<Record>
 	 */
 	public void delete(int numRecord){
 		//TODO implement
+		int blockNum = getBlockNumOfRecord(numRecord);
+		if (blockNum >= 0){
+			int blockRecNum = getRecNumInBlock(numRecord, blockNum);
+			db[blockNum].deleteRecord(blockRecNum);
+		}
 	}
 	
 	/**
@@ -172,6 +174,15 @@ public class MitgliederDB implements Iterable<Record>
 	}
 
 	
+	private int getRecNumInBlock(int numRecord, int blockNum){
+		int recCounter = 0;
+		for (int i = 0; i < blockNum; i++){
+			recCounter += getBlock(i).getNumberOfRecords();
+		}
+		return numRecord - recCounter;
+	}
+
+
 	@Override
 	public Iterator<Record> iterator() {
 		return new DBIterator();
