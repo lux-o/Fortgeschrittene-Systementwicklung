@@ -103,9 +103,12 @@ public class MitgliederDB implements Iterable<Record>
 	 */
 	public Record read(int recNum){
 		//TODO implement - done
+		// find the block of record
 		int blockNum = getBlockNumOfRecord(recNum);
 		if (blockNum >= 0){
+			// get number of record in refernce to the block
 			int blockRecNum = getRecNumInBlock(recNum, blockNum);
+			// return the record
 			return
 				getBlock(blockNum).getRecord(blockRecNum);
 		}
@@ -122,9 +125,12 @@ public class MitgliederDB implements Iterable<Record>
 		int recCounter = 1;
 		for (int i = 0; i < db.length; i++){
 			for (int j = 1; j <= db[i].getNumberOfRecords(); j++){ // könnte man für jegliche Suche erweitern
+				// iterate to all blocks and its records
 				if(searchTerm.equals(db[i].getRecord(j).getAttribute(1))){
+					// found searched record and return postion
 					return recCounter;
 				}
+				// not found --> increase postion
 				else recCounter++;
 			}
 		}
@@ -138,7 +144,7 @@ public class MitgliederDB implements Iterable<Record>
 	 */
 	public int insert(Record record){
 		//TODO implement - geht nur für unordered
-		//search for block where the record should be appended
+		// search for block where the record should be appended
 		int currBlock = getBlockNumOfRecord(getNumberOfRecords());
 		int result = db[currBlock].insertRecordAtTheEnd(record);
 		if (result != -1 ){ //insert was successful
@@ -155,9 +161,11 @@ public class MitgliederDB implements Iterable<Record>
 	 * @param numRecord number of the record to be deleted
 	 */
 	public void delete(int numRecord){
-		//TODO implement
+		//TODO implement - done
+		// get block of the record
 		int blockNum = getBlockNumOfRecord(numRecord);
 		if (blockNum >= 0){
+			// get record number in refernce to the block it is in
 			int blockRecNum = getRecNumInBlock(numRecord, blockNum);
 			db[blockNum].deleteRecord(blockRecNum);
 		}
@@ -171,6 +179,13 @@ public class MitgliederDB implements Iterable<Record>
 	 */
 	public void modify(int numRecord, Record record){
 		//TODO
+		// get block of the record
+		int blockNum = getBlockNumOfRecord(numRecord);
+		if (blockNum >= 0){
+			// get record number in refernce to the block it is in
+			int blockRecNum = getRecNumInBlock(numRecord, blockNum);
+			db[blockNum].modifyRecord(blockRecNum, record);
+		}
 	}
 
 	

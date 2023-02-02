@@ -132,10 +132,23 @@ public class DBBlock implements Iterable<Record> {
 	 * @param recNum number of record to delete
 	 */
 	public void deleteRecord(int recNum){
+		// replace record with following chars(records or end of block)
+		// --> get lenght of deleted record for movement and the start position of following records/end
+		if (getNumberOfRecords() > recNum){
 		moveRecordsUp(
-			getStartPosOfRecord(recNum+1), 
+			getStartPosOfRecord(recNum +1) - 1,// um recdel mit zu überschreiben 
 			getEndPosOfRecord(getStartPosOfRecord(recNum +1)) - getStartPosOfRecord(recNum +1) + 1);
-	
+			// TODO: wenn es keine recNum+1 gibt?
+		} else {
+			for(int i = getStartPosOfRecord(recNum); i < block.length; i++){
+				block[i] = DEFCHAR;
+			}
+		}
+		
+	}
+
+	public void modifyRecord(int recNum, Record record){
+
 	}
 
 
