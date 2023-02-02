@@ -122,6 +122,15 @@ public class MitgliederDB implements Iterable<Record>
 	 */
 	public int findPos(String searchTerm){
 		//TODO implement
+		int recCounter = 1;
+		for (int i = 0; i < db.length; i++){
+			for (int j = 1; j <= db[i].getNumberOfRecords(); j++){ // könnte man für jegliche Suche erweitern
+				if(searchTerm.equals(db[i].getRecord(j).getAttribute(1))){
+					return recCounter;
+				}
+				else recCounter++;
+			}
+		}
 		return -1;
 	}
 	

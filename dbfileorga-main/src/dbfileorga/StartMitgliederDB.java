@@ -15,7 +15,7 @@ public class StartMitgliederDB {
 			//find and read a record with a given Mitgliedesnummer e.g 95
 			rec = db.read(db.findPos("95"));
 			System.out.println(rec);
-			
+			/*
 			//insert Hans Meier
 			int newRecNum = db.insert(new Record("122;2;44;Meier;Hans;07.05.01;01.03.10;120;15"));
 			System.out.println(db.read(newRecNum));
@@ -27,7 +27,7 @@ public class StartMitgliederDB {
 			//delete the record with Mitgliedsnummer 95 
 			db.delete(db.findPos("95"));
 			System.out.println(db);
-			
+			*/
 			
 	}
 
