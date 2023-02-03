@@ -137,10 +137,11 @@ public class DBBlock implements Iterable<Record> {
 		moveRecordsUp(
 			getStartPosOfRecord(recNum +1), 
 			getEndPosOfRecord(getStartPosOfRecord(recNum)) - getStartPosOfRecord(recNum) + 1);
-			// TODO: wenn es keine recNum+1 gibt?
 		} else {
-			for(int i = getStartPosOfRecord(recNum); i < block.length; i++){
-				block[i] = DEFCHAR;
+			// if there is no next record
+			block[getStartPosOfRecord(recNum)] = DEFCHAR; 
+			for(int i = getStartPosOfRecord(recNum) + 1; i < block.length; i++){
+				block[i] = 0;
 			}
 		}
 		
