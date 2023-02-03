@@ -84,11 +84,10 @@ public class DBBlock implements Iterable<Record> {
 	/**
 	 * move records down to make more space for modify record
 	 * @param start startpoint of record(s) to be moved
-	 * @param end endpoint of record(s) to be moved
 	 * @param movement distance of movement (positiv)
 	 */
-	private void moveRecordsDown(int start, int end, int movement){
-		for (int i = end +1; i >= start; i--){
+	private void moveRecordsDown(int start, int movement){
+		for (int i = findEmptySpace(); i >= start; i--){
 			block[i + movement] = block[i];
 		}
 	}
@@ -136,8 +135,8 @@ public class DBBlock implements Iterable<Record> {
 		// --> get lenght of deleted record for movement and the start position of following records/end
 		if (getNumberOfRecords() > recNum){
 		moveRecordsUp(
-			getStartPosOfRecord(recNum +1) - 1,// um recdel mit zu überschreiben 
-			getEndPosOfRecord(getStartPosOfRecord(recNum +1)) - getStartPosOfRecord(recNum +1) + 1);
+			getStartPosOfRecord(recNum +1), 
+			getEndPosOfRecord(getStartPosOfRecord(recNum)) - getStartPosOfRecord(recNum) + 1);
 			// TODO: wenn es keine recNum+1 gibt?
 		} else {
 			for(int i = getStartPosOfRecord(recNum); i < block.length; i++){
@@ -147,8 +146,34 @@ public class DBBlock implements Iterable<Record> {
 		
 	}
 
+	/**
+	 * modify a record
+	 * @param recNum number of record in the block
+	 * @param record modified record
+	 */
 	public void modifyRecord(int recNum, Record record){
-
+		// save variables for less method calls
+		int oldRecordLength = getEndPosOfRecord(getStartPosOfRecord(recNum)) - getStartPosOfRecord(recNum) + 1;
+		int newRecordLength = record.length() + 1; // has no RECDEL --> actual length is +1
+		int startPos = getStartPosOfRecord(recNum);
+		// check of modification is longer/shprter/equal in length
+		if (newRecordLength - oldRecordLength > block.length - findEmptySpace()){
+			// not enough space in block
+			System.out.println("not enough space. \nModification failed.");
+			return;
+		} else if (newRecordLength > oldRecordLength){
+			// modification is longer --> need more space
+			moveRecordsDown(getEndPosOfRecord(startPos), newRecordLength - oldRecordLength);
+		} else if (newRecordLength < oldRecordLength){
+			// modification is shorter --> close gap
+			moveRecordsUp(getEndPosOfRecord(startPos), oldRecordLength - newRecordLength);
+		}
+		// insert modification
+		int j = 0;
+		for (int i = startPos; i < startPos + record.length(); i++){
+			block[i] = record.charAt(j);
+			j++;
+		}
 	}
 
 
