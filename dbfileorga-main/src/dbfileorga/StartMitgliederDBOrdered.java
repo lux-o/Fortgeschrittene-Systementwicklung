@@ -20,6 +20,7 @@ public class StartMitgliederDBOrdered {
 			System.out.println(rec);
 			System.out.println("Duration: " + (after-before) + " ms");
 
+			//find and read a record with a given Mitgliedesnummer e.g 95 / binary search
 			before = System.currentTimeMillis();
 			rec = db.read(db.findPosOrdered("95"));
 			after = System.currentTimeMillis();
