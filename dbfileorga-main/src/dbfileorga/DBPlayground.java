@@ -48,7 +48,7 @@ public class DBPlayground {
         if (choosenNumber == 1){
             while (!quit){
                 int option = 0;
-                System.out.println("Choose your action:\n" + 
+                System.out.println("---------------------------------\nChoose your action:\n" + 
                 "1: read database\n" +
                 "2: get record by record number\n" +
                 "3: find record by Mitgliedsnummer\n" +
@@ -174,7 +174,7 @@ public class DBPlayground {
         else if (choosenNumber == 2){
             while (!quit){
                 int option = 0;
-                System.out.println("Choose your action:\n" + 
+                System.out.println("---------------------------------\nChoose your action:\n" + 
                 "1: read database\n" +
                 "2: get record by record number\n" +
                 "3: find record by Mitgliedsnummer - linear search\n" +

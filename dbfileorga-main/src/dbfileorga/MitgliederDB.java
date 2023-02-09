@@ -148,9 +148,11 @@ public class MitgliederDB implements Iterable<Record>
 	 */
 	private int binarySearch(String searchTerm, int left, int right){
 		int pivot = left + (right - left) / 2;
-        if ((right < left) || (db[pivot].getRecord(1) == null))
-			// break-up if pivot block is empty (generally the last block of db which means, that there is no record fitting to the searchterm)
+        if ((right < left) || (db[pivot].getNumberOfRecords() == 0)) {
+			// break-up if pivot block is empty 
+			System.out.println("Binäry search failed. Maybe try linear search.");
             return -1;
+		}
         if (Integer.parseInt(db[pivot].getRecord(1).getAttribute(1)) > Integer.parseInt(searchTerm))
 			// searcht record hast to be in the blocks before
             return
