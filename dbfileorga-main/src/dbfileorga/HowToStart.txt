@@ -1,0 +1,8 @@
+Gruppe WI21C-A (Oliver Lux, Carmen Silberbach, Celina Hof)
+
+Es gibt 2 Möglichkeiten, das Programm zu starten:
+1.  Starten Sie die Datei StartMitgliederDB.java oder StartMitgliederDBOrdered.java,
+    um Ihre erstellten Testfälle zu testen und ggf. abzuwandeln.
+2.  Starten Sie die Datenbank über DBPlayground.java. 
+    Über die Konsole kann aktiv mit der Datenbank interagiert
+    und mehrere Aktionen nacheinander ausgeführt werden.
